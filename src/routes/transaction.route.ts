@@ -7,6 +7,6 @@ router.post("/", createTransaction);
 router.get("/user/:userId", getTransactions);
 router.put("/:transactionId", updateTransaction);
 router.delete("/:transactionId", deleteTransaction);
-router.get("/report", transactionReport);
+router.get("/report/:userId", transactionReport);
 
 export default router;

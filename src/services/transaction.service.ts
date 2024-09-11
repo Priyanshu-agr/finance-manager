@@ -54,15 +54,72 @@ export const deleteTransactionService = async (transactionId: number) => {
     });
 }
 
-export const transactionReportService = async (userId: number,year:number,month:number) => {
-    console.log(new Date(year,month-1,1));
-    return await prisma.transaction.findMany({
-        where:{
+export const transactionReportService = async (userId: number, year: number, month: number) => {
+    console.log(new Date(year, month - 1, 1));
+
+    interface CategoryReport {
+        id: number;
+        name: string;
+        totalIncome: number;
+        totalExpense: number;
+    }
+
+    interface TransactionReport {
+        totalIncome: number;
+        totalExpense: number;
+        categories: CategoryReport[];
+    }
+
+
+    const report: TransactionReport = {
+        totalIncome: 0,
+        totalExpense: 0,
+        categories: [],
+    };
+
+    const transactions = await prisma.transaction.findMany({
+        where: {
             userId: userId,
-            date:{
-                gte:new Date(year,month-1,1),
-                lt:new Date(year,month,1)
+            date: {
+                gte: new Date(year, month - 1, 1),
+                lt: new Date(year, month, 1)
             }
+        },
+        include: {
+            Category: true
         }
     });
+
+    const categoryMap = new Map<number, CategoryReport>();
+
+
+    transactions.forEach((transaction) => {
+        const { id, name } = transaction.Category;
+
+        if (!categoryMap.has(id)) {
+            categoryMap.set(id, {
+                id,
+                name,
+                totalIncome: 0,
+                totalExpense: 0,
+            });
+        }
+
+        const categoryReport = categoryMap.get(id)!;
+
+
+
+        if (transaction.type === "DEPOSIT") {
+            report.totalIncome += transaction.amount;
+            categoryReport.totalIncome += transaction.amount;
+        }
+        else {
+            report.totalExpense += transaction.amount;
+            categoryReport.totalExpense += transaction.amount;
+        }
+    });
+    report.categories = Array.from(categoryMap.values());
+
+
+    return report;
 }

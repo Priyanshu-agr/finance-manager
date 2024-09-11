@@ -16,7 +16,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     try {
         const { userName, password } = req.body;
         const user = await loginUser(userName, password);
-        res.json({ success: true, message: "Login route" });
+        res.json({ success: true, data: user });
     }
     catch (err: any) {
         next(err);
