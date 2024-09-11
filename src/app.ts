@@ -5,12 +5,7 @@ import router from './routes/index';
 import errorMiddleware from './middleware/error.middleware';
 const app = express();
 
-app.use(cors(
-    {
-        origin: "*",
-        credentials: true
-    }
-));
+app.use(cors());
 
 app.use(cookieParser());
 app.use(express.json());

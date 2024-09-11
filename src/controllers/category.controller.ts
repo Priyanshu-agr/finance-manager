@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../utils/error.util";
 import { Category, categorySchema } from "../schema/category.schema";
 import { createCategoryService, deleteCategoryService, getCategoriesService, getTransactionsByCategoryService, updateCategoryService } from "../services/category.service";
 
@@ -48,4 +47,15 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
     catch (err: any) {
         next(err);
     }
-};
+}
+
+export const getTransactionsByCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const categoryId = req.params.categoryId;
+        const transactions = await getTransactionsByCategoryService(Number(categoryId));
+        res.status(200).json({message:"Transactions fetched successfully",data:transactions});
+    }
+    catch (err: any) {
+        next(err);
+    }
+}
