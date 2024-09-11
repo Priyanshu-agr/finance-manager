@@ -61,7 +61,7 @@ model Category {
 
 model Saving {
   id          Int      @id @default(autoincrement())
-  targetAmout Float
+  targetAmount Float
   targetDate  DateTime @db.Date
   userId      Int      @unique @map("user_id")
   User        User     @relation(fields: [userId], references: [id])

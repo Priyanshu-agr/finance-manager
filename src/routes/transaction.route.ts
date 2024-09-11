@@ -4,7 +4,7 @@ import { createTransaction, getTransactions, updateTransaction, deleteTransactio
 const router = Router();
 
 router.post("/", createTransaction);
-router.get("/:userId", getTransactions);
+router.get("/user/:userId", getTransactions);
 router.put("/:transactionId", updateTransaction);
 router.delete("/:transactionId", deleteTransaction);
 
