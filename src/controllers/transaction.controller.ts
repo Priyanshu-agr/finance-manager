@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { transactionSchema, Transaction } from "../schema/transaction.schema";
-import { createTransactionService, getTransactionsService, updateTransactionService, deleteTransactionService, transactionReportService } from "../services/transaction.service";
+import { createTransactionService, getTransactionsService, updateTransactionService, deleteTransactionService, transactionReportService, getTransactionsByCategoryService } from "../services/transaction.service";
 import { CustomError } from "../utils/error.util";
 
 export const createTransaction = async (req: Request, res: Response, next: NextFunction) => {
@@ -50,6 +50,17 @@ export const deleteTransaction = async (req: Request, res: Response, next: NextF
         }
         await deleteTransactionService(Number(transactionId));
         res.status(200).json({ message: "Transaction deleted successfully" });
+    }
+    catch (err: any) {
+        next(err);
+    }
+}
+
+export const getTransactionsByCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const categoryId = req.params.categoryId;
+        const transactions = await getTransactionsByCategoryService(Number(categoryId));
+        res.status(200).json({message:"Transactions fetched successfully",data:transactions});
     }
     catch (err: any) {
         next(err);

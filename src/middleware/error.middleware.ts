@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { CustomError } from "../utils/error.util";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 
 const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
     console.log(err);
@@ -22,6 +22,15 @@ const errorMiddleware = (err: any, req: Request, res: Response, next: NextFuncti
                 name: err.name
             }
         });
+    }
+    else if(err instanceof PrismaClientInitializationError){
+        return res.status(503).json({
+            success:false,
+            error: {
+                message: "Can't reach database",
+                name:"Internal Error"
+            }
+        })
     }
     return res.status(500).json({
         success: false,

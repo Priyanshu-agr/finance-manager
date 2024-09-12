@@ -54,6 +54,14 @@ export const deleteTransactionService = async (transactionId: number) => {
     });
 }
 
+export const getTransactionsByCategoryService = async (categoryId: number) => {
+    return await prisma.transaction.findMany({
+        where: {
+            categoryId: categoryId
+        }
+    });
+}
+
 export const transactionReportService = async (userId: number, year: number, month: number) => {
     console.log(new Date(year, month - 1, 1));
 

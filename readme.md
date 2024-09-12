@@ -1,6 +1,6 @@
 ## Personal Finance Manager
 
-### Technologies
+### Technologies Used
 
 - Typescript
 - Express
@@ -61,4 +61,9 @@ npm run dev
 #### To run the server in production environment
 ```
 npm start
+```
+
+### API Documentatin Link
+```
+https://documenter.getpostman.com/view/26660546/2sAXqmC6PG
 ```
