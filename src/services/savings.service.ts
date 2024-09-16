@@ -1,5 +1,5 @@
 import prisma from "../libs/prisma";
-import { savingsSchema, Savings } from "../schema/savings.schema";
+import { Savings } from "../schema/savings.schema";
 import { CustomError } from "../utils/error.util";
 
 export const createSavingsGoalService = async (savingsData: Savings) => {
